@@ -10,15 +10,18 @@ def egcd(a, b):
         g, x, y = egcd(b % a, a)
         return (g, y - (b // a) * x, x)
 
+#最大公約数
 def gcd(a,b):
     while b > 0:
         a, b = b, a % b
     return a
-    
+
+#最小公倍数
 def lcm(a, b):
     #整数割り算にしないとfloatがオーバーフローするとかでてとまる
     return a * b // gcd(a, b)
 
+#(借り物)
 #def modinv(a, m):
 #    g, x, y = egcd(a, m)
 #    if g != 1:
@@ -38,6 +41,7 @@ def generate_keys(p, q, e=65537):
     #d = inverse(e, L)
     #d = modinv(e, (p-1)*(q-1))
   
+    #publick_key, private_key
     return (e, N), (d, N)
 
 #暗号化
@@ -57,8 +61,8 @@ def decrypt(encrypted_bytes, private_key):
     encrypted_integer = int.from_bytes(encrypted_bytes, 'big')  
     plain_integer = pow(encrypted_integer, d, N)
     plain_bytes = plain_integer.to_bytes((plain_integer.bit_length() // 8) + 1, byteorder='big') 
-    
-    return(plain_bytes.decode(encoding='UTF-8',errors='strict'))
+    plain_text = plain_bytes.decode(encoding='UTF-8',errors='strict') 
+    return(plain_text)
 
 
 #--------------------------------------
@@ -68,7 +72,10 @@ p = 54311
 q = 158304142767773473275973624083670689370769915077762416888835511454118432478825486829242855992134819928313346652550326171670356302948444602468194484069516892927291240140200374848857608566129161693687407393820501709299228594296583862100570595789385365606706350802643746830710894411204232176703046334374939501731
 
 plain = "FLAG{hello}"
-pub, priv = generate_keys(p, q)
-encr = encrypt(plain, pub )
-print(encr)
-print(decrypt(encr, priv))  
+pub_key, priv_key = generate_keys(p, q)
+
+encrypted_bytes = encrypt(plain, pub_key )
+print(encrypted_bytes)
+
+decrypted_text = decrypt(encrypted_bytes, priv_key)
+print(decrypted_text)  
