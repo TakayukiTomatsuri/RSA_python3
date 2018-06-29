@@ -19,11 +19,11 @@ def lcm(a, b):
     #整数割り算にしないとfloatがオーバーフローするとかでてとまる
     return a * b // gcd(a, b)
 
-def modinv(a, m):
-    g, x, y = egcd(a, m)
-    if g != 1:
-        raise Exception('No modular inverse')
-    return x%m
+#def modinv(a, m):
+#    g, x, y = egcd(a, m)
+#    if g != 1:
+#        raise Exception('No modular inverse')
+#    return x%m
 
 #鍵生成
 def generate_keys(p, q, e=65537):
@@ -34,7 +34,7 @@ def generate_keys(p, q, e=65537):
 
     c, x, y = egcd(e, L)
     d = x % L
-    #こちらでもよい
+    #こちらでもよい?
     #d = inverse(e, L)
     #d = modinv(e, (p-1)*(q-1))
   
